@@ -12,7 +12,7 @@ import web.framework.CoreSteps.BaseRunner;
 
 @RunWith(Cucumber.class)
 
-@CucumberOptions(tags ="@TC0001", features="tests", glue ="web.framework.CoreSteps" )
+@CucumberOptions(tags ="@TC0001", features="tests", glue ="web.framework.CoreSteps", stepNotifications = true )
 
 public class GenericRunner {
 	

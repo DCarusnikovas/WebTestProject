@@ -1,8 +1,5 @@
 package web.framework.CoreSteps;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import static web.framework.CoreSteps.Support.CoreStepsHelper.printDebug;
@@ -25,7 +22,8 @@ public class CoreStepsDefinition {
     @And("^I click \"([^\"]*)\"$")
     public void i_click_element(String element) throws Throwable {
     	
-    	WebDriverManager.getDriver().findElement(By.xpath(element)).click();
+    	WebDriverManager.findAndHightlight(element).click();
     	printDebug("i_click_element", "Successfully clicked on element -> "+element, false);
-    }
+    }    
+    
 }

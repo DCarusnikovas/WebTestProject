@@ -14,7 +14,7 @@ public class CoreStepsDefinition {
     }
     
     @Given("^I navigate to \"([^\"]*)\"$")
-    public void i_navigate_to_something(String url) throws Throwable {
+    public void i_navigate_to(String url) throws Throwable {
        WebDriverManager.startBrowser(url);
     }
     
@@ -24,6 +24,13 @@ public class CoreStepsDefinition {
     	
     	WebDriverManager.findAndHightlight(element).click();
     	printDebug("i_click_element", "Successfully clicked on element -> "+element, false);
-    }    
+    }
+    
+    @And("^I enter a text \"([^\"]*)\" into \"([^\"]*)\"$")
+    public void i_enter_a_text_into(String text, String element)  {
+    	WebDriverManager.findAndHightlight(element).sendKeys(StateMap.getValueIfState(text));
+    	printDebug("i_enter_a_text_into", "Successfully enter text"+StateMap.getValueIfState(text)+" in to element -> "+element, false);
+        
+    }
     
 }

@@ -1,0 +1,6 @@
+Google.Search.IAgree.Button,//button[div[text()='I agree']]
+Google.Search.Mic.Button,//div[@aria-label='Search by voice']
+Google.Search.TextBox.Input,//div[@aria-label='Search by voice']/../preceding-sibling::div/input
+Google.Search.GSearch.Button,(//input[@value='Google Search'])[2]
+Google.Search.GOOGLE.Img,(//img[@alt='Google'])[1]
+Google.Search.Header.FirstResult.Link,(//div[@id='search']//div[@class='g']//h3)[1]

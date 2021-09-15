@@ -2,7 +2,6 @@ package web.framework.CoreSteps.Support;
 
 import java.util.HashMap;
 import java.util.Map;
-
 import static org.junit.Assert.assertTrue;
 
 public class StateMapHelper {
@@ -43,40 +42,49 @@ public class StateMapHelper {
 	
 	
 	/**
-	 * This method will get a value for a key from state variables table
+	 * This method will return value or xpath for mapped key in mappings folder csv
+	 * Note: if xpath will be sent as key it will return xpath
 	 * @param key - key unique string and never null
-	 * @return - String value from table
+	 * @return - String value or xpath
 	 * @author DCaru
-	 */
-	public static String getSettingMap(String key) {
-		assertTrue("Key should have atlleast 1 character", !key.trim().isEmpty());
-		assertTrue("The provided key -> "+key+" <- don't exist in settingsVariableMap table",mappingVariableMap.containsKey(key.trim().toLowerCase()));
-		return mappingVariableMap.get(key.trim().toLowerCase());
+     */	
+	public static String getMapping(String elementDetails) {
+		
+		elementDetails = elementDetails.trim();
+				
+		if(elementDetails.startsWith("/")||elementDetails.startsWith("(")||elementDetails.startsWith("."))
+			return elementDetails;
+		else {
+			assertTrue("getMapping function can only accept xpaths or mapped values from csv located in mappings folder, please check value you sent => "+elementDetails,mappingVariableMap.containsKey(elementDetails.toLowerCase()));
+			return mappingVariableMap.get(elementDetails.toLowerCase());
+		}
+		
+		
 	}
-	
 	
 	/**
-	 * This method will add or update existing settings variables table with a key and value which can be used later 
-	 * @param key - String - unique key to insure that not override existing data unless required and cannot be null or blank
-	 * @param value - any String value
-	 * @author DCaru
+	 * This method should be used only once to initialize mapping from csv
+	 * @throws Exception
 	 */
-	private static void setSettingsMap(String key, String value) {
-		key=key.trim().toLowerCase();
-		assertTrue("Key should have atlleast 1 character", !key.isEmpty());
-		if(mappingVariableMap.containsKey(key))
-			CoreStepsHelper.printDebug("setSettingsMap", "The map already has value set for key:"+key+" and value is set for '"+mappingVariableMap.get(key)+ "' =>be carefull as it will override this value with new: "+value, false);
-		
-		mappingVariableMap.put(key, value);
-		
-		CoreStepsHelper.printDebug("setSettingsMap", key+" and "+value+ "been set in settingsVariableMap table", false);
-	}
 
+	public static void createMapppings() throws Exception {
+		if(mappingVariableMap.size()==0)
+			mappingVariableMap=FileHelper.getMappingsFromCSV();
+		else
+			throw new Exception("createMapppings() should be used once and mappingVariableMap should be empty");
+		
+	}
 	
-	//TODO: need to create loader
-	public static String getMapping(String elementDetails) {
-		// TODO Auto-generated method stub
-		return elementDetails;
+	/**
+	 * This method will print to console all state variables using print debug
+	 */
+	public static void printAllStateVariables() {
+		
+		stateVariableMap.forEach((k,v)->{
+			if(k.startsWith("state."))
+				CoreStepsHelper.printDebug("printAllStateVariables", k+" ===> "+v, true);
+		});
+		
 	}
 
 }

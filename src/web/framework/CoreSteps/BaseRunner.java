@@ -5,6 +5,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.Properties;
 
+import web.framework.CoreSteps.Support.CoreStepsHelper;
 import web.framework.CoreSteps.Support.StateMapHelper;
 
 public class BaseRunner {
@@ -30,6 +31,11 @@ public class BaseRunner {
 	public void TearDown() {
 		
 		System.out.println(">>>>>>>>>>>>>>>> Test Ended : " + DateCoreSteps.getCurrentDateTime("dd MMM YYYY - HH:mm:ss"));
+		
+		//print all state variables
+		System.out.println(">>>>>>>>>>>>>>>> List of State variables : ");
+		StateMapHelper.printAllStateVariables();
+		System.out.println(">>>>>>>>>>>>>>>> End of  List of State variables");
 
 		if (BaseRunner.getProperty("setting.closeBrowser").equalsIgnoreCase("true")) {
 			System.out.println(">>>>>>>>>>>>>>>> Closing Browser as requested");

@@ -4,7 +4,9 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
+
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -23,10 +25,14 @@ public class WebDriverManager {
 	private static final String webDriverPath = System.getProperty("user.dir")+browserDriverFolder;
 	private static final int waitTime =120;
 	private static final int shortWaitTime =5;
+	private static int highlightColor =7;
 	
 	
 	
-	public static void startBrowser(String url) {
+	public static void startBrowser(String url) throws Exception {
+		
+		StateMapHelper.createMapppings();
+	
 		CoreStepsHelper.printDebug("startBrowser", browser+" Browser: Attempt to navigate to: "+url, false);
 		System.setProperty("webdriver.chrome.driver", webDriverPath);
 		ChromeOptions options = new ChromeOptions();
@@ -64,9 +70,30 @@ public class WebDriverManager {
 	 */
 	public static WebElement findAndHightlight(String elementDetails) {
 		WebElement element = findElement(elementDetails,true);
+		scrollAndHighlight(element,true);
 		return element;
 	}
 	
+
+
+	public static void scrollAndHighlight(WebElement element, boolean scroll) {
+		
+		highlightColor = highlightColor % 7;
+		final String[] rainbowCol = {"red","orange","yellow","green","blue","indigo","violet"};
+		String nextColor =rainbowCol[highlightColor];
+		String script = "arguments[0].style.cssText=arguments[0].style.cssText +' border : 3px solid "+nextColor+" !important'";
+		JavascriptExecutor js =(JavascriptExecutor) getDriver();
+		
+		if (scroll)
+			script = "arguments[0].scrollIntoView({block:'center'}); "+script;
+		
+		js.executeScript(script, element);
+		
+		highlightColor++ ;
+		
+		
+	}
+
 	public static WebElement findElement(String elementDetails, boolean waitTodisplay) {
 		List<WebElement> items =findElementsList(elementDetails, waitTodisplay);
 		assertTrue("Expected to find only 1 element for => "+elementDetails+" <= but found "+items.size(),items.size()==1);

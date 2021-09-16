@@ -18,6 +18,11 @@ public class CoreStepsDefinition {
        WebDriverManager.startBrowser(url);
     }
     
+    @Given("^I navigate to (Google|GR)$")
+    public void i_navigate_to_selection(String urlName) throws Throwable {
+       WebDriverManager.startBrowser(urlName.equalsIgnoreCase("Google")?"https://www.google.com/":"https://silentium98.wixsite.com/look-gorgeous");
+    }
+    
     
     @And("^I click \"([^\"]*)\"$")
     public void i_click_element(String element) throws Throwable {

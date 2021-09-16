@@ -28,25 +28,30 @@ public class WebDriverManager {
 	private static int highlightColor =7;
 	
 	
-	
+	/**
+	 * This method can be called to open requested URL. it would also load mappings
+	 * @param url - web url (http(s)://...)
+	 * @throws Exception
+	 */
 	public static void startBrowser(String url) throws Exception {
-		
+
 		StateMapHelper.createMapppings();
-	
-		CoreStepsHelper.printDebug("startBrowser", browser+" Browser: Attempt to navigate to: "+url, false);
+
+		CoreStepsHelper.printDebug("startBrowser", browser + " Browser: Attempt to navigate to: " + url, false);
 		System.setProperty("webdriver.chrome.driver", webDriverPath);
 		ChromeOptions options = new ChromeOptions();
 		options.addArguments("start-maximized");
 		options.addArguments("allow-running-insecure-content");
 		options.addArguments("--ignore-certificate-errors");
-		
-		webDriver =new ChromeDriver(options);
+
+		webDriver = new ChromeDriver(options);
 		webDriver.get(url);
-		
-		assertTrue("Please check chrome version or url.", getDriver().getCurrentUrl().toLowerCase().contains(url.toLowerCase().split("//")[1]));
-		
-		CoreStepsHelper.printDebug("startBrowser", "Successfully access web URL: "+url, false);
-		
+
+		assertTrue("Please check chrome version or url.",
+				getDriver().getCurrentUrl().toLowerCase().contains(url.toLowerCase().split("//")[1]));
+
+		CoreStepsHelper.printDebug("startBrowser", "Successfully access web URL: " + url, false);
+
 	}
 	
 	/**
@@ -75,67 +80,99 @@ public class WebDriverManager {
 	}
 	
 
-
+	/**
+	 * This method will do attempt to scroll and highlight element
+	 * 
+	 * @param element - Webelement of element to highlight
+	 * @param scroll  - true or false for scroll
+	 */
 	public static void scrollAndHighlight(WebElement element, boolean scroll) {
-		
+
 		highlightColor = highlightColor % 7;
-		final String[] rainbowCol = {"red","orange","yellow","green","blue","indigo","violet"};
-		String nextColor =rainbowCol[highlightColor];
-		String script = "arguments[0].style.cssText=arguments[0].style.cssText +' border : 3px solid "+nextColor+" !important'";
-		JavascriptExecutor js =(JavascriptExecutor) getDriver();
-		
+		final String[] rainbowCol = { "red", "orange", "yellow", "green", "blue", "indigo", "violet" };
+		String nextColor = rainbowCol[highlightColor];
+		String script = "arguments[0].style.cssText=arguments[0].style.cssText +' border : 3px solid " + nextColor
+				+ " !important'";
+		JavascriptExecutor js = (JavascriptExecutor) getDriver();
+
 		if (scroll)
-			script = "arguments[0].scrollIntoView({block:'center'}); "+script;
-		
+			script = "arguments[0].scrollIntoView({block:'center'}); " + script;
+
 		js.executeScript(script, element);
-		
-		highlightColor++ ;
-		
-		
+
+		highlightColor++;
+
 	}
 
+	/**
+	 * use this method if expected to find only single element
+	 * 
+	 * @param elementDetails - xpath or xpath mapping
+	 * @param waitTodisplay  - true or false ( if true max wait 120 seconds, if
+	 *                       false 5 seconds)
+	 * @return - webelement of item
+	 */
 	public static WebElement findElement(String elementDetails, boolean waitTodisplay) {
-		List<WebElement> items =findElementsList(elementDetails, waitTodisplay);
-		assertTrue("Expected to find only 1 element for => "+elementDetails+" <= but found "+items.size(),items.size()==1);
+		List<WebElement> items = findElementsList(elementDetails, waitTodisplay);
+		assertTrue("Expected to find only 1 element for => " + elementDetails + " <= but found " + items.size(),
+				items.size() == 1);
 		return items.get(0);
+	}
+	
+	/**
+	 * Use this method if expected to find 0 or multiple items element
+	 * 
+	 * @param elementDetails - xpath or xpath mapping
+	 * @param waitTodisplay  - true or false ( if true max wait 120 seconds, if
+	 *                       false 5 seconds)
+	 * @return - List<WebElement> - List of items
+	 */
+	public static List<WebElement> findElements(String elementsDetails, boolean waitTodisplay) {
+		List<WebElement> items = findElementsList(elementsDetails, waitTodisplay);
+
+		return items;
 	}
 
 	/**
 	 * 
 	 * @param elementDetails - can be xpath or mapping
-	 * @param waitTodisplay - true or false - to wait if no element found or not
+	 * @param waitTodisplay  - true or false - to wait if no element found or not
 	 * @return - WebElement if found otherwise null
 	 * @author DCaru
 	 */
 	private static List<WebElement> findElementsList(String elementDetails, boolean waitTodisplay) {
-			
-		String elementToFind =StateMapHelper.getMapping(elementDetails);
-		int time=shortWaitTime;
-		if(waitTodisplay)
-			time=waitTime;
-		
-		List<WebElement> items= null;
-			
+
+		String elementToFind = StateMapHelper.getMapping(elementDetails);
+		int time = shortWaitTime;
+		if (waitTodisplay)
+			time = waitTime;
+
+		List<WebElement> items = null;
+
 		try {
-			items = new WebDriverWait(getDriver(), time).until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.xpath(elementToFind)));
-			
+			items = new WebDriverWait(getDriver(), time)
+					.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.xpath(elementToFind)));
+
 		} catch (Exception e) {
-			
+
 			CoreStepsHelper.printDebug("findElementsList", "Exception thwon so no visible web elements found", false);
 		}
 
 		return items;
 
 	}
-
+	
+	/**
+	 * This Method will close browser if was started
+	 */
 	public static void closeBrowser() {
-		getDriver().close();
-		getDriver().quit();
-		webDriver = null;
-		
-		
-	}
+		if (webDriver != null) {
+			getDriver().close();
+			getDriver().quit();
+			webDriver = null;
+		}
 
+	}
 
 
 }

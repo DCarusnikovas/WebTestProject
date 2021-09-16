@@ -5,12 +5,19 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.Properties;
 
-import web.framework.CoreSteps.Support.CoreStepsHelper;
+import io.cucumber.java.After;
+import io.cucumber.java.Scenario;
+import io.cucumber.java.Status;
 import web.framework.CoreSteps.Support.StateMapHelper;
 
 public class BaseRunner {
+	
 
 	private static final Properties prop = new Properties();
+	private Status status;
+	private Scenario scenarioCurrent;
+	private static boolean isFailed = false;
+	
 
 	public void Setup() {
 
@@ -27,11 +34,24 @@ public class BaseRunner {
 		System.out.println(">>>>>>>>>>>>>>>> Test Starting : " + DateCoreSteps.getCurrentDateTime("dd MMM YYYY - HH:mm:ss"));
 
 	}
+	
+	
+    @After
+    public void after(Scenario scenario) {
+    	scenarioCurrent =scenario;
+        status = scenario.getStatus();
+        isFailed = status == Status.FAILED;
+        
+    }	
+    
+    public static Boolean isScenarioFailed() {
+    	return isFailed;
+    }
 
 	public void TearDown() {
 		
 		System.out.println(">>>>>>>>>>>>>>>> Test Ended : " + DateCoreSteps.getCurrentDateTime("dd MMM YYYY - HH:mm:ss"));
-		
+
 		//print all state variables
 		System.out.println(">>>>>>>>>>>>>>>> List of State variables : ");
 		StateMapHelper.printAllStateVariables();
@@ -39,6 +59,9 @@ public class BaseRunner {
 
 		if (BaseRunner.getProperty("setting.closeBrowser").equalsIgnoreCase("true")) {
 			System.out.println(">>>>>>>>>>>>>>>> Closing Browser as requested");
+			WebDriverManager.closeBrowser();
+		} else if (BaseRunner.getProperty("setting.closeBrowserIfPass").equalsIgnoreCase("true")&&!isScenarioFailed()){
+			System.out.println(">>>>>>>>>>>>>>>> Closing Browser as requested as test Pass");
 			WebDriverManager.closeBrowser();
 		}
 

@@ -12,7 +12,6 @@ import java.util.Map;
 
 import org.apache.commons.io.FileUtils;
 
-import io.cucumber.java.en.And;
 
 public class FileHelper {
 
@@ -36,14 +35,17 @@ public class FileHelper {
 				String line;
 
 				while ((line = br.readLine()) != null) {
-					if (!line.trim().startsWith("#")
-							&& !copyFromCsv.containsKey(line.trim().toLowerCase().split(",")[0]))
-						copyFromCsv.put(line.trim().toLowerCase().split(",")[0],
-								line.substring(line.indexOf(",") + 1).trim());
-					else
-						throw new Exception(
-								"Duplicated key found please check that only 1 unique key is used. The duplicate key is "
-										+ line.trim().split(",")[0]);
+					boolean commentLine =line.trim().startsWith("#")||line.trim().startsWith("/");
+							
+					if (!commentLine)
+						if (!line.trim().startsWith("#")
+								&& !copyFromCsv.containsKey(line.trim().toLowerCase().split(",")[0]))
+							copyFromCsv.put(line.trim().toLowerCase().split(",")[0],
+									line.substring(line.indexOf(",") + 1).trim());
+						else
+							throw new Exception(
+									"Duplicated key found please check that only 1 unique key is used. The duplicate key is "
+											+ line.trim().split(",")[0]);
 
 				}
 			}

@@ -7,8 +7,9 @@ import static org.junit.Assert.assertTrue;
 public class StateMapHelper {
 	
 
-	private final static Map<String, String> stateVariableMap= new HashMap<String, String>();
+	private static final Map<String, String> stateVariableMap= new HashMap<String, String>();
 	private static Map<String, String> mappingVariableMap= new HashMap<String, String>();
+	
 
 
 	
@@ -69,21 +70,28 @@ public class StateMapHelper {
 
 	public static void createMapppings() throws Exception {
 		if(mappingVariableMap.size()==0)
-			mappingVariableMap=FileHelper.getMappingsFromCSV();
-		else
-			throw new Exception("createMapppings() should be used once and mappingVariableMap should be empty");
-		
+			mappingVariableMap=FileHelper.getMappingsFromCSV();		
 	}
+	
+	public static int mappingVariableMapSize() {
+		return mappingVariableMap.size();
+	}
+	
 	
 	/**
 	 * This method will print to console all state variables using print debug
+	 * @param delete - if true will delete table
 	 */
-	public static void printAllStateVariables() {
+	public static void printAllStateVariables(Boolean delete) {
 		
 		stateVariableMap.forEach((k,v)->{
 			if(k.startsWith("state."))
 				CoreStepsHelper.printDebug("printAllStateVariables", k+" ===> "+v, true);
 		});
+		if(delete) {
+			stateVariableMap.clear();
+			CoreStepsHelper.printDebug("printAllStateVariables",">>>>>>>>>>>>>>>> Deleted State variable table", false);
+		}
 		
 	}
 

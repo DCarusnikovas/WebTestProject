@@ -35,7 +35,7 @@ public class WebDriverManager {
 	 */
 	public static void startBrowser(String url) throws Exception {
 
-		StateMapHelper.createMapppings();
+
 
 		CoreStepsHelper.printDebug("startBrowser", browser + " Browser: Attempt to navigate to: " + url, false);
 		System.setProperty("webdriver.chrome.driver", webDriverPath);
@@ -114,8 +114,9 @@ public class WebDriverManager {
 	 */
 	public static WebElement findElement(String elementDetails, boolean waitTodisplay) {
 		List<WebElement> items = findElementsList(elementDetails, waitTodisplay);
-		assertTrue("Expected to find only 1 element for => " + elementDetails + " <= but found " + items.size(),
-				items.size() == 1);
+		int size = items==null?0:items.size();
+		assertTrue("Expected to find only 1 element for => " + elementDetails + " <= but found " + size,
+				size == 1);
 		return items.get(0);
 	}
 	
@@ -164,14 +165,35 @@ public class WebDriverManager {
 	
 	/**
 	 * This Method will close browser if was started
+	 * @param close - if true will kill chrome and chromedriver, if false will delete webdriver
 	 */
-	public static void closeBrowser() {
-		if (webDriver != null) {
+	public static void closeBrowser(boolean close) {
+		if (webDriver != null && close) {
 			getDriver().close();
 			getDriver().quit();
-			webDriver = null;
+			
 		}
+		webDriver = null;
+	}
+	
 
+
+	public static boolean visibilityHighlight(String element, boolean visible ,boolean wait) {
+		List<WebElement> elementToLook=findElementsList(element,wait);
+		
+		int size = elementToLook==null?0:elementToLook.size();
+		if(visible) {
+			assertTrue("Expected to find only 1 element for "+element +" and found :"+size,size==1);
+			assertTrue("Element "+element+ " not displayed ase requested, please check", elementToLook.get(0).isDisplayed());
+			scrollAndHighlight(elementToLook.get(0), true);
+			return true;
+		}else{
+			
+			assertTrue(size==0?"Element displayed when was expecting to be not visible":"More then 1 element present in the DOM please check xpaths. Current amount found: "+size,size==0||(size==1&&!elementToLook.get(0).isDisplayed()));
+			
+			return false;
+
+		}
 	}
 
 

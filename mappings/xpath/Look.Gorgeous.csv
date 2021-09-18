@@ -1,0 +1,13 @@
+# Top bar navigation panel
+Look.Gorgeous.Top.Nav.Panel.HOME.Link,//a[@data-testid='linkElement']//*[text()='HOME']
+Look.Gorgeous.Top.Nav.Panel.PlansPricing.Link,//a[@data-testid='linkElement']//*[text()='Plans & Pricing']
+Look.Gorgeous.Top.Nav.Panel.Programs.Link,//a[@data-testid='linkElement']//*[text()='Programs']
+Look.Gorgeous.Top.Nav.Panel.Groups.Link,//a[@data-testid='linkElement']//*[text()='Groups']
+Look.Gorgeous.Top.Nav.Panel.Members.Link,//a[@data-testid='linkElement']//*[text()='Members']
+Look.Gorgeous.Top.Nav.Panel.Shop.Link,//a[@data-testid='linkElement']//*[text()='Shop']
+Look.Gorgeous.Top.Nav.Panel.Blog.Link,//a[@data-testid='linkElement']//*[text()='Blog']
+Look.Gorgeous.Top.Nav.Panel.BookOnline.Link,//a[@data-testid='linkElement']//*[text()='Book Online']
+Look.Gorgeous.Top.Nav.Panel.More.Tab,//div[@data-testid='linkElement']//*[text()='More']
+Look.Gorgeous.Top.Nav.Panel.LogIn.Button,//button[./*[text()='Log In']]
+
+#Next elements

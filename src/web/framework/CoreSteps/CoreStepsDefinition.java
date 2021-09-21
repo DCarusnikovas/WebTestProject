@@ -54,7 +54,7 @@ public class CoreStepsDefinition {
     @And("^I check that element \"([^\"]*)\" (is|is not) visible$")
     public void i_check_element_visibility(String element,String visibility) throws Throwable {
     	
-    	boolean isVisble = WebDriverManager.visibilityHighlight(element, visibility.equals("is"),false);
+        WebDriverManager.visibilityHighlight(element, visibility.equals("is"),false);
     	printDebug("i_check_element_visibility", "The element -> "+element+" "+visibility+" visible as requested" , false);
     }
     

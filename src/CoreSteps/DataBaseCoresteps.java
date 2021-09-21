@@ -1,7 +1,7 @@
-package web.framework.CoreSteps;
+package CoreSteps;
 
+import CoreStepsSupport.DBHelper;
 import io.cucumber.java.en.And;
-import web.framework.CoreSteps.Support.DBHelper;
 
 public class DataBaseCoresteps {
 

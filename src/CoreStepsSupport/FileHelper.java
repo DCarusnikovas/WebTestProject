@@ -1,4 +1,4 @@
-package web.framework.CoreSteps.Support;
+package CoreStepsSupport;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -62,7 +62,7 @@ public class FileHelper {
 	 */
 	public static List<String> getGrammarList() throws IOException {
 
-		File folder = new File("src/web/framework/CoreSteps");
+		File folder = new File("src/CoreSteps");
 		String[] extensions = { "java" };
 		Collection<File> listOfFiles = FileUtils.listFiles(folder, extensions, true);
 

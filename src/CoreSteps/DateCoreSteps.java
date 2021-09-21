@@ -1,4 +1,4 @@
-package web.framework.CoreSteps;
+package CoreSteps;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;

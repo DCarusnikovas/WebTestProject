@@ -1,7 +1,9 @@
-package web.framework.CoreSteps.Support;
+package CoreStepsSupport;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import static CoreStepsSupport.CoreStepsHelper.printDebug;
 import static org.junit.Assert.assertTrue;
 
 public class StateMapHelper {
@@ -86,7 +88,7 @@ public class StateMapHelper {
 		
 		stateVariableMap.forEach((k,v)->{
 			if(k.startsWith("state."))
-				CoreStepsHelper.printDebug("printAllStateVariables", k+" ===> "+v, true);
+				CoreStepsHelper.printDebug("printAllStateVariables", String.format("%-45s ===> %s", k,v), true);
 		});
 		if(delete) {
 			stateVariableMap.clear();
@@ -94,5 +96,29 @@ public class StateMapHelper {
 		}
 		
 	}
+	
+	
+	public static String getValueIfState(String keyForStateValue) {
+		
+		String value = keyForStateValue.toUpperCase().trim();
+		if(value.startsWith("STATE."))
+			return StateMapHelper.getStateMap(keyForStateValue);
+		else if(value.startsWith("DEFAULT."))
+			return StateMapHelper.getMapping(keyForStateValue);
+		else
+			return keyForStateValue;
+					
+	}
+	
+	public static void setState(String keyForStateMap, String valueForStateMap) {	
+		StateMapHelper.setStateMap(keyForStateMap, valueForStateMap);
+		printDebug("setStateMap", keyForStateMap+" and "+valueForStateMap+ "been set in state table", false);
+		
+	}
+	
+	
+	
+	
+	
 
 }

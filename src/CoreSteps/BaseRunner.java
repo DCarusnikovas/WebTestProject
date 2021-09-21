@@ -1,14 +1,15 @@
-package web.framework.CoreSteps;
+package CoreSteps;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Properties;
+
+import CoreStepsSupport.StateMapHelper;
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
 import io.cucumber.java.Scenario;
 import io.cucumber.java.Status;
-import web.framework.CoreSteps.Support.StateMapHelper;
 
 public class BaseRunner {
 	
@@ -30,7 +31,7 @@ public class BaseRunner {
 		System.out.println(">>>>>>>>>>>>>>>> Preparing for test run"+(isEclipse()?" in Eclipse":"")+" by user:"+userName);
 		StateMapHelper.setStateMap("State.TestStartTimeAndDate",
 				DateCoreSteps.getCurrentDateTime("dd MMM YYYY - HH:mm:ss"));
-		System.out.println(">>>>>>>>>>>>>>>> Start Date : " + StateMap.getValueIfState("State.TestStartTimeAndDate"));
+		System.out.println(">>>>>>>>>>>>>>>> Start Date : " + StateMapHelper.getValueIfState("State.TestStartTimeAndDate"));
 
 		// Get properties Properties from automationProperties file
 		System.out.println(">>>>>>>>>>>>>>>> Initializing Setting properties");

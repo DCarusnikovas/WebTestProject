@@ -3,20 +3,21 @@ package eclipse;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
+
+import CoreSteps.BaseRunner;
 import io.cucumber.junit.Cucumber;
 import io.cucumber.junit.CucumberOptions;
-import web.framework.CoreSteps.BaseRunner;
 
 
 
 
 @RunWith(Cucumber.class)
 
-@CucumberOptions(tags ="@TC00003", features="tests", glue ="web.framework.CoreSteps", stepNotifications = true )
+@CucumberOptions(tags ="@TC00003", features="tests", glue ="CoreSteps", stepNotifications = true )
 
 public class GenericRunner {
 	
-	private static web.framework.CoreSteps.BaseRunner  runner = new BaseRunner();
+	private static CoreSteps.BaseRunner  runner = new BaseRunner();
 	@BeforeClass
 	public static void Setup() {
 		

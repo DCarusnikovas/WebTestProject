@@ -1,4 +1,4 @@
-package web.framework.CoreSteps.Support;
+package CoreStepsSupport;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

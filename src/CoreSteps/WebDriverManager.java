@@ -1,4 +1,4 @@
-package web.framework.CoreSteps;
+package CoreSteps;
 
 import static org.junit.Assert.assertTrue;
 
@@ -14,8 +14,8 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import web.framework.CoreSteps.Support.CoreStepsHelper;
-import web.framework.CoreSteps.Support.StateMapHelper;
+import CoreStepsSupport.CoreStepsHelper;
+import CoreStepsSupport.StateMapHelper;
 
 public class WebDriverManager {
 

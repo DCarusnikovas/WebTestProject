@@ -16,6 +16,9 @@ import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.Timer;
 
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebElement;
+
 import CoreStepsSupport.CoreStepsHelper;
 import CoreStepsSupport.StateMapHelper;
 
@@ -39,7 +42,7 @@ public class CoreStepsDefinition {
      * @throws Throwable
      */
     @Given("^I navigate to \"([^\"]*)\"$")
-    public void i_navigate_to(String url) throws Throwable {
+    public static void i_navigate_to(String url) throws Throwable {
        WebDriverManager.startBrowser(url);
     }
     
@@ -50,7 +53,7 @@ public class CoreStepsDefinition {
      * @throws Throwable
      */
     @Given("^I navigate to (Google|LG)$")
-    public void i_navigate_to_selection(String urlName) throws Throwable {
+    public static void i_navigate_to_selection(String urlName) throws Throwable {
        assertTrue("Only Google or LG allowed to be passed as urlName. User pass value: "+urlName,
     		   urlName.equals("GOOGLE")
     		   ||urlName.equals("LG"));
@@ -62,7 +65,7 @@ public class CoreStepsDefinition {
      * @param element - XPATH or Mapping
      */
     @And("^I click \"([^\"]*)\"$")
-    public void i_click_element(String element){
+    public static void i_click_element(String element) throws Exception{
     	
     	WebDriverManager.findAndHightlight(element).click();
     	printDebug("i_click_element", "Successfully clicked on element -> "+element, false);
@@ -72,10 +75,24 @@ public class CoreStepsDefinition {
      * This grammar will let a user to type text to web element
      * @param text - text to enter
      * @param element - XPATH or Mapping
+     * @throws Exception 
+
      */
     @And("^I enter a text \"([^\"]*)\" into \"([^\"]*)\"$")
-    public void i_enter_a_text_into(String text, String element)  {
+    public static void i_enter_a_text_into(String text, String element) throws Exception  {
     	WebDriverManager.findAndHightlight(element).sendKeys(StateMapHelper.getValueIfState(text));
+    	
+    	printDebug("i_enter_a_text_into", "Successfully enter text"+StateMapHelper.getValueIfState(text)+" in to element -> "+element, false);
+        
+    }
+    
+    @And("^I update a text \"([^\"]*)\" in \"([^\"]*)\"$")
+    public static void i_update_a_text_in(String text, String element) throws Exception  {
+    	WebElement webElement = WebDriverManager.findAndHightlight(element);
+    	webElement.clear();
+    	webElement.sendKeys(StateMapHelper.getValueIfState(text));
+    	webElement.sendKeys(Keys.SPACE, Keys.BACK_SPACE);
+    	//WebDriverManager.findAndHightlight(element).sendKeys(StateMapHelper.getValueIfState(text),Keys.ENTER);
     	printDebug("i_enter_a_text_into", "Successfully enter text"+StateMapHelper.getValueIfState(text)+" in to element -> "+element, false);
         
     }
@@ -88,7 +105,7 @@ public class CoreStepsDefinition {
      * @throws Throwable
      */
     @And("^I check that element \"([^\"]*)\" (is|is not) visible$")
-    public void i_check_element_visibility(String element,String visibility) throws Throwable {
+    public static void i_check_element_visibility(String element,String visibility) throws Throwable {
     	
         WebDriverManager.visibilityHighlight(element, visibility.equals("is"),false);
     	printDebug("i_check_element_visibility", "The element -> "+element+" "+visibility+" visible as requested" , false);
@@ -101,7 +118,7 @@ public class CoreStepsDefinition {
      * @param toThisText - text2
      */
     @And("^I check that this text \"([^\"]*)\" (contains|equal to) text \"([^\"]*)\"$")
-    public void i_check_text_contain_text(String text,String containsOrEqual, String toThisText)  {
+    public static void i_check_text_contain_text(String text,String containsOrEqual, String toThisText)  {
     	
     	boolean  isMatch =CoreStepsHelper.twoStringsMatch(StateMapHelper.getValueIfState(text), StateMapHelper.getValueIfState(toThisText),containsOrEqual.equalsIgnoreCase("contains"));
     	assertTrue("Text 1: "+ StateMapHelper.getValueIfState(text)+(containsOrEqual.equalsIgnoreCase("contains")?" didn't contain ":" was not equal to ")+" Text 2: "+StateMapHelper.getValueIfState(toThisText),isMatch);
@@ -117,7 +134,7 @@ public class CoreStepsDefinition {
      * @param toThisText - text2
      */
     @And("^I check that this text \"([^\"]*)\" does not contain text \"([^\"]*)\"$")
-    public void i_check_text_dont_contain_text(String text, String toThisText)  {
+    public static void i_check_text_dont_contain_text(String text, String toThisText)  {
     	
     	boolean  isMatch =!CoreStepsHelper.twoStringsMatch(StateMapHelper.getValueIfState(text), StateMapHelper.getValueIfState(toThisText),false);
     	
@@ -137,7 +154,7 @@ public class CoreStepsDefinition {
      * @param text - String text to verify
      */
     @And("^I check that element \"([^\"]*)\" (contains|equal to) text \"([^\"]*)\"$")
-    public void i_check_element_contain_text(String element,String containsOrEqual, String text)  {
+    public static void i_check_element_contain_text(String element,String containsOrEqual, String text) throws Exception {
     	
     	CoreStepsHelper.elementHasText(element, StateMapHelper.getValueIfState(text), containsOrEqual.equalsIgnoreCase("contains"),true);
  	
@@ -152,7 +169,7 @@ public class CoreStepsDefinition {
      * @param text - String text to verify
      */
     @And("^I check that element \"([^\"]*)\" does not contain text \"([^\"]*)\"$")
-    public void i_check_element_dont_contain_text(String element, String text)  {
+    public static void i_check_element_dont_contain_text(String element, String text)  throws Exception {
     	
     	CoreStepsHelper.elementHasText(element, StateMapHelper.getValueIfState(text), false,false);  	
     	
@@ -167,7 +184,7 @@ public class CoreStepsDefinition {
 	 * @throws Throwable
 	 */
 	@Then("^I put pause here for \"([^\"]*)\" minutes$")
-	static public void i_put_pause_here(int minutes) throws Throwable {
+    public static void i_put_pause_here(int minutes) throws Throwable {
 		
 		int totalTime = minutes;
 		
@@ -231,12 +248,12 @@ public class CoreStepsDefinition {
 	 * @param type - milliseconds or seconds orminutes
 	 */
 	@Then("^I wait \"([^\"]*)\" (milliseconds|seconds|minutes)$")
-	static public void waitForMilliseconds(String time, String type) 
+    public static void waitForMilliseconds(String time, String type) 
 	{
 		
 		try 
 		{	
-			printDebug("CoreStepDefinitions.waitForMilliseconds", "Sleeping for " + time +" " +type, false);
+			printDebug("waitForMilliseconds", "Sleeping for " + time +" " +type, false);
 			
 			int milliseconds =Integer.valueOf(time) * (type.contains("milliseconds")?1:type.contains("seconds")?1000:60000);
 
@@ -244,13 +261,58 @@ public class CoreStepsDefinition {
 		} 
 		catch (NumberFormatException nfe) 
 		{
-			printDebug("CoreStepDefinitions.waitForMilliseconds", "You have entered an invalid input, can only be positive Integer. You have entered: " + time, false); 
+			printDebug("waitForMilliseconds", "You have entered an invalid input, can only be positive Integer. You have entered: " + time, false); 
 			nfe = new NumberFormatException("You have entered an invalid input, can only be positive Integer. You have entered: " + time);
 			throw nfe;
 		} 
 		catch (InterruptedException ie) 
 		{
-			printDebug("CoreStepDefinitions.waitForMilliseconds", "Interrupted Exception thrown, sleep was interrupted, carrying on", false);			
+			printDebug("waitForMilliseconds", "Interrupted Exception thrown, sleep was interrupted, carrying on", false);			
 		}		
 	}
+	
+	
+
+	@Then("^An error message (appears|does not appear) with text \"([^\"]*)\"$")
+	public static void an_error_message_validation(String isAppear, String text) throws Exception {
+		WebDriverManager.waitForPageRender();
+
+		WebElement items = null;
+		if (WebDriverManager.getDriver().getCurrentUrl().contains("look-gorgeous"))
+			items = WebDriverManager.findElement(StateMapHelper.getMapping("Look.Gorgeous.Error.Message.Label")+"[contains(text(),'"+StateMapHelper.getValueIfState(text)+"')]",isAppear.equalsIgnoreCase("appear"));
+		else
+			assertTrue("an_error_message_validation grammar not implemented for website", false);
+
+		assertTrue("No error message displayed when expected", items != null);
+		boolean errorContainedText = items!=null && items.isDisplayed();
+		
+		if (isAppear.equalsIgnoreCase("appears")) {
+
+			assertTrue("No errors found with text:" + StateMapHelper.getValueIfState(text), errorContainedText);
+			printDebug("an_error_message_validation",
+					"Error message contained requested text: " + StateMapHelper.getValueIfState(text), false);
+		} else {
+
+			assertTrue("Error found with text:" + StateMapHelper.getValueIfState(text), !errorContainedText);
+			printDebug("an_error_message_validation",
+					"Error message didn't contained requested text: " + StateMapHelper.getValueIfState(text), false);
+
+		}
+
+	}
+	
+	@Then("^No error messages on page displayed$")
+	public static void no_error_messages() throws Throwable {
+		if (WebDriverManager.getDriver().getCurrentUrl().contains("look-gorgeous"))
+			i_check_element_visibility("Look.Gorgeous.Error.Message.Label","is not");
+		else
+			assertTrue("no_error_messages grammar not implemented for website", false);
+		
+		printDebug("no_error_messages","No error messages on page displayed", false);
+	}
+	
+	
+	
+	
+	
 }

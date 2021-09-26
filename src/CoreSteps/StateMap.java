@@ -32,9 +32,14 @@ public class StateMap {
     	
 
     }
-    
+    /**
+     * This grammar will help user to read a text from web element into state variable
+     * @param element - XPATH or mapping
+     * @param state - State. variable to save
+     * @throws Exception
+     */
     @And("^I read element \"([^\"]*)\" text to state \"([^\"]*)\"$")
-    public void i_read_elemnt_text_to_state(String element, String state)  {
+    public void i_read_elemnt_text_to_state(String element, String state)  throws Exception {
     	
     	String text = WebDriverManager.findAndHightlight(element).getText();   	
     	i_put_text_into_state("put text", text, state);

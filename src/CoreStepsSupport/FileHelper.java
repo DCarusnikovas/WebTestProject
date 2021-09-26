@@ -34,8 +34,8 @@ public class FileHelper {
 			try (BufferedReader br = new BufferedReader(new FileReader(csvPath))) {
 				String line;
 
-				while ((line = br.readLine()) != null) {
-					boolean commentLine =line.trim().startsWith("#")||line.trim().startsWith("/");
+				while ((line = br.readLine()) != null){
+					boolean commentLine =line.trim().startsWith("#")||line.trim().startsWith("/")||line.trim().isBlank();
 							
 					if (!commentLine)
 						if (!line.trim().startsWith("#")

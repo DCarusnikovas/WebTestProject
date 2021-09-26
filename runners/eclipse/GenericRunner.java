@@ -13,7 +13,7 @@ import io.cucumber.junit.CucumberOptions;
 
 @RunWith(Cucumber.class)
 
-@CucumberOptions(tags ="@TC00003", features="tests", glue ="CoreSteps", stepNotifications = true )
+@CucumberOptions(tags ="@TC00004", features="tests", glue ="CoreSteps", stepNotifications = true )
 
 public class GenericRunner {
 	

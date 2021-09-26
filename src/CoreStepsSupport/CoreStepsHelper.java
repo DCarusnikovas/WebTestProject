@@ -82,7 +82,7 @@ public class CoreStepsHelper {
 	 * @param exact   - if true - should 100% match if false web element text contains in value provided
 	 * @matchOrNotMatch - true if match false if not match
 	 */
-	public static void elementHasText(String element, String text, boolean exact, boolean matchOrNotMatch) {
+	public static void elementHasText(String element, String text, boolean exact, boolean matchOrNotMatch) throws Exception {
 		String textFromElement = WebDriverManager.findAndHightlight(element).getText();
 		assertTrue("The text from element: " +element +(!matchOrNotMatch?" contained text which was not expected.":
 			(exact?" didn't match text provided.":" didn't contain expected text."))

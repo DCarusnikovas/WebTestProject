@@ -72,13 +72,27 @@ public class WebDriverManager {
 	 * @param elementDetails - can be xpath or mapping
 	 * @return - WebElement with element details found
 	 * @author DCaru
+	 * @throws InterruptedException 
+	 * @throws NumberFormatException 
 	 */
-	public static WebElement findAndHightlight(String elementDetails) {
+	public static WebElement findAndHightlight(String elementDetails) throws NumberFormatException, InterruptedException {
+		WebDriverManager.waitForPageRender();
 		WebElement element = findElement(elementDetails,true);
 		scrollAndHighlight(element,true);
 		return element;
 	}
 	
+/**
+ * This method will wait for page rendering
+ * @throws NumberFormatException
+ * @throws InterruptedException
+ */
+	public static void waitForPageRender() throws NumberFormatException, InterruptedException {
+		Thread.sleep(Long.parseLong(BaseRunner.getProperty("settting.minimumWaitTimeInMilliSeconds")));
+		if(getDriver().getCurrentUrl().contains("look-gorgeous"))
+			findElement("//*[@id=\"comp-ktmnuc3g\"]", true);
+		
+	}
 
 	/**
 	 * This method will do attempt to scroll and highlight element

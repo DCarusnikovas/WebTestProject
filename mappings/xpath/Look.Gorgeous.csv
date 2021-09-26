@@ -1,3 +1,7 @@
+#Default error message
+Look.Gorgeous.Error.Message.Label,//*[contains(@id,"ErrorMessage")]
+Look.Gorgeous.Fist.Error.Message.Label,(//*[contains(@id,"ErrorMessage")])[1]
+
 # Top bar navigation panel
 Look.Gorgeous.Top.Nav.Panel.HOME.Link,//a[@data-testid='linkElement']//*[text()='HOME']
 Look.Gorgeous.Top.Nav.Panel.PlansPricing.Link,//a[@data-testid='linkElement']//*[text()='Plans & Pricing']
@@ -10,4 +14,15 @@ Look.Gorgeous.Top.Nav.Panel.BookOnline.Link,//a[@data-testid='linkElement']//*[t
 Look.Gorgeous.Top.Nav.Panel.More.Tab,//div[@data-testid='linkElement']//*[text()='More']
 Look.Gorgeous.Top.Nav.Panel.LogIn.Button,//button[./*[text()='Log In']]
 
+# Register Form
+Look.Gorgeous.Register.Button,//button[*[text()='Sign up with email']]
+Look.Gorgeous.Register.SignUp.Header.Label,//h1[text()='Sign Up']
+Look.Gorgeous.Register.Login.Link.Button,//span[text()='Already a member?']/following-sibling::button[text()='Log In']
+Look.Gorgeous.Register.Email.Input,//label[text()='Email']/following-sibling::div/input[@type='email' and not(@name)]
+Look.Gorgeous.Register.Password.Input,//label[text()='Password']/following-sibling::div/input[@type='password']
+Look.Gorgeous.Register.SignUp.button,//span[text()='Already a member?']/following::button[*[text()='Sign Up']]
+
+
 #Next elements
+
+

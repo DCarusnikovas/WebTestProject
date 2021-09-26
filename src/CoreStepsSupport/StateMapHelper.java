@@ -112,7 +112,7 @@ public class StateMapHelper {
 	
 	public static void setState(String keyForStateMap, String valueForStateMap) {	
 		StateMapHelper.setStateMap(keyForStateMap, valueForStateMap);
-		printDebug("setStateMap", keyForStateMap+" and "+valueForStateMap+ "been set in state table", false);
+		printDebug("setStateMap", keyForStateMap+" and "+valueForStateMap+ " been set in state table", false);
 		
 	}
 	

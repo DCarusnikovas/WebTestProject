@@ -3,8 +3,11 @@ package CoreSteps;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Properties;
 
+import CoreStepsSupport.DBHelper;
 import CoreStepsSupport.StateMapHelper;
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
@@ -79,12 +82,21 @@ public class BaseRunner {
 		} else
 			WebDriverManager.closeBrowser(false);
         
+		ArrayList<String> list = new ArrayList<String>();
+		list.add(scenarios_tags);
+		list.add(isFailed?"FAILED":"PASSED");
+		list.add(scenarios_tags);
+		
+		DBHelper.logReport(list);
         
     }	
     
 
 
-	public void TearDown() {
+	public void TearDown() throws SQLException {
+		
+		DBHelper.closeConnection();
+		
 		endTimeDate = DateCoreSteps.getCurrentDateTime("dd/MM/YYYY - HH:mm:ss");
 		System.out.println(">>>>>>>>>>>>>>>> Test Ended : " + endTimeDate);
 

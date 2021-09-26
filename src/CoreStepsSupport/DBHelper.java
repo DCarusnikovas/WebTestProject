@@ -1,10 +1,17 @@
 package CoreStepsSupport;
 
+import static org.junit.Assert.assertTrue;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
+import CoreSteps.BaseRunner;
 
 public class DBHelper {
 
@@ -14,9 +21,10 @@ public class DBHelper {
 
 		if (conn == null || conn.isClosed()) {
 			
-			String url ="jdbc:mysql://sql4.freesqldatabase.com:3306";
-			String username = "sql4437652";
-			String password = "E31eEWyh2z";
+			String [] dbCon =BaseRunner.getProperty("setting.connectionATDB").split(",");
+			String url ="jdbc:mysql://"+dbCon[0];
+			String username = dbCon[1];
+			String password = dbCon[2];
 			
 			try {
 				conn = DriverManager.getConnection(url,username,password);
@@ -36,26 +44,86 @@ public class DBHelper {
 		return conn;
 	}
 	
-	public static void runDML() throws Exception {
+	public static Map<Integer, ArrayList<String>> runSelectQuery(String query,Boolean singleCollumn, Boolean singleRow) throws Exception {
 		
-		String query = "select * from sql4437652.Automation";
+    	assertTrue("Only select queries can be used with this grammar and should start from SELECT. current requested query is :" +query,query.toUpperCase().startsWith("SELECT"));
+    	
+		int countHeaders = query.toUpperCase().split("FROM")[0].split(",").length;
+		
+		CoreStepsHelper.printDebug("runSelectQuery", "Found headers in query: "+countHeaders, false);
+		if(singleCollumn)
+			assertTrue("Query has more then 1 collumn, please check query: "+query,countHeaders==1);
+		
 		Statement st = null;
 		ResultSet rs= null;
 		
 		try {
 			st = getConnection().createStatement();
 			rs=st.executeQuery(query);
-			
-			while(rs.next())  
-				System.out.println("Query Returned " +rs.getInt(1)+"  "+rs.getString(2)+"  "+rs.getString(3)+"  "+rs.getString(4));  
 				  
 		} catch (Exception e) {
 			throw new Exception("SQL Error: " + e);
 		}
-		finally {
-			conn.close();
+
+
+		Map<Integer, ArrayList<String>> resultMap =new HashMap<Integer, ArrayList<String>>();
+		
+		while( rs.next()) {
+			
+			ArrayList<String> ar = new ArrayList<String>();
+			for(int x=1;x<=countHeaders; x++)
+				ar.add(rs.getString(x));
+			resultMap.put(1, ar);
 		}
 		
 		
+		
+		if(singleRow) 
+			assertTrue("Query has returned "+resultMap.size()+" rows, please check query as expected only 1 result",resultMap.size()==1);
+			
+		
+		
+		return resultMap;
 	}
+	
+	
+	public static void closeConnection() throws SQLException {
+		if(conn!=null||!conn.isClosed())
+			conn.close();
+	}
+
+	public static void logReport(ArrayList<String> list) {
+
+		String insertQuery ="INSERT INTO sql4437652.Automation('execution_tag','result','scenario_tags')"
+				+ "  VALUES ('"+list.get(0)+"','"+list.get(1)+"','"+list.get(2)+"')";
+
+				try {
+					runDML(insertQuery);
+					CoreStepsHelper.printDebug("logReport", "Report Logged", false);
+				} catch (Exception e) {
+					CoreStepsHelper.printError("logReport", "Issue to connect to DB to log report", false);
+				}
+				
+		
+	}
+	
+	public static void runDML(String query) throws Exception {
+		
+		
+		Statement st = null;
+
+		
+		try {
+			st = getConnection().createStatement();
+			st.executeQuery(query);
+				  
+		} catch (Exception e) {
+			throw new Exception("SQL Error: " + e);
+		}
+
+
+		
+	}
+	
 }
+

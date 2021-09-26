@@ -46,4 +46,6 @@ Feature: LG - Validations - User register Form
       And I navigate to LG
     Given I execute step "Step 2: I test sleep"
       And I put pause here for "1" minutes
-    Given I execute step "Step 3: Sleep worked good"  
+    Given I execute step "Step 3: Sleep worked good" 
+    
+   

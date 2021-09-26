@@ -1,5 +1,7 @@
 package eclipse;
 
+import java.sql.SQLException;
+
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
@@ -13,7 +15,7 @@ import io.cucumber.junit.CucumberOptions;
 
 @RunWith(Cucumber.class)
 
-@CucumberOptions(tags ="@TC00004", features="tests", glue ="CoreSteps", stepNotifications = true )
+@CucumberOptions(tags ="@TCDenisDB1", features="tests", glue ="CoreSteps", stepNotifications = true )
 
 public class GenericRunner {
 	
@@ -26,7 +28,7 @@ public class GenericRunner {
 	}
 	
 	@AfterClass
-	public static void TearDown() {
+	public static void TearDown() throws SQLException {
 		
 		runner.TearDown();
 		

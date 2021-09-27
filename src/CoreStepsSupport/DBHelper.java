@@ -67,13 +67,13 @@ public class DBHelper {
 
 
 		Map<Integer, ArrayList<String>> resultMap =new HashMap<Integer, ArrayList<String>>();
-		
+		int countRows =0;
 		while( rs.next()) {
-			
+			countRows++;
 			ArrayList<String> ar = new ArrayList<String>();
 			for(int x=1;x<=countHeaders; x++)
 				ar.add(rs.getString(x));
-			resultMap.put(1, ar);
+			resultMap.put(countRows, ar);
 		}
 		
 		
@@ -94,7 +94,7 @@ public class DBHelper {
 
 	public static void logReport(ArrayList<String> list) {
 
-		String insertQuery ="INSERT INTO sql4437652.Automation('execution_tag','result','scenario_tags')"
+		String insertQuery ="INSERT INTO sql4437652.Automation(execution_tag,result,scenario_tags)"
 				+ "  VALUES ('"+list.get(0)+"','"+list.get(1)+"','"+list.get(2)+"')";
 
 				try {
@@ -115,7 +115,7 @@ public class DBHelper {
 		
 		try {
 			st = getConnection().createStatement();
-			st.executeQuery(query);
+			st.executeUpdate(query);
 				  
 		} catch (Exception e) {
 			throw new Exception("SQL Error: " + e);

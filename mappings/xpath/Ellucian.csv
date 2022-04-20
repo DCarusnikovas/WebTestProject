@@ -1,0 +1,9 @@
+##############################################     Login page     ##############################################
+Ellucian.LoginPage.Username.Input,//input[@id='username']
+Ellucian.LoginPage.Password.Input,//input[@id='password']
+Ellucian.LoginPage.SignIn.Button,//button[normalize-space(text()) = 'Sign In']
+
+
+##############################################  Elloyce Home page  ##############################################
+Ellucian.Elloyce.TopPanel.Logo.Img,//a[@aria-label='Home']/img[contains(@src,'eloyce-white.png')]
+Ellucian.Elloyce.TopPanel.SideBar.Button,//button[@aria-label='Main Menu']
